@@ -41,6 +41,7 @@ const BookMarkPage = () => {
                 short_description: text,
                 created_at: val?.jorney?.created_at,
                 author: val?.jorney?.author,
+                userId: val?.jorney?.userId,
               }
               return (
                 <React.Fragment key={val?.id}>
@@ -48,6 +49,9 @@ const BookMarkPage = () => {
                     bookMark={e => handleDeleteJorney(e, dataDelete)}
                     data={dataCard}
                     details={() => handleDetail(index)}
+                    editFunc={() =>
+                      navigate(`/user/edit-jorney/${val?.jorney?.id}`)
+                    }
                   />
                 </React.Fragment>
               )

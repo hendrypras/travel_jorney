@@ -41,6 +41,14 @@ const App = () => {
             </ProtectRoute>
           }
         />
+        <Route
+          path="user/edit-jorney/:jorneyId"
+          element={
+            <ProtectRoute>
+              <AddJorneyPage />
+            </ProtectRoute>
+          }
+        />
 
         <Route path="jorney/:jorneyId" element={<DetailJorneyPage />} />
       </Route>

@@ -6,24 +6,61 @@ import 'react-quill/dist/quill.snow.css'
 import { useState, useEffect } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import toast from 'react-hot-toast'
-import { createJorney } from './actions'
+import { createJorney, resetAddJorney, updateJorney } from './actions'
+import { useParams } from 'react-router-dom'
+import { getDetailJorney } from '../DetailJorney/actions'
 
 const AddJorneyPage = () => {
   const { user } = useSelector(state => state.login)
-  const { createDataStatus } = useSelector(state => state.addJorney)
+  const { createDataStatus, updatedJorneyStatus } = useSelector(
+    state => state.addJorney
+  )
   const dispatch = useDispatch()
   const currentDate = new Date()
+  const { jorneyId } = useParams()
+  const { detailJorney } = useSelector(state => state.detailJorney)
 
   const [inputForm, setInputForm] = useState({
-    title: '',
-    image: '',
-    short_description: '',
-    description: '',
+    title: detailJorney?.title || '',
+    image: detailJorney?.image || '',
+    short_description: detailJorney?.short_description || '',
+    description: detailJorney?.description || '',
     author: user?.full_name,
     userId: user?.id,
     created_at: currentDate,
     updated_at: currentDate,
   })
+  useEffect(() => {
+    if (jorneyId) {
+      dispatch(getDetailJorney(jorneyId))
+    }
+  }, [jorneyId])
+  useEffect(() => {
+    if (jorneyId && detailJorney) {
+      setInputForm({
+        title: detailJorney?.title || '',
+        image: detailJorney?.image || '',
+        short_description: detailJorney?.short_description || '',
+        description: detailJorney?.description || '',
+        author: detailJorney?.author,
+        userId: user?.id,
+        created_at: currentDate,
+        updated_at: currentDate,
+      })
+    }
+    return () => {
+      setInputForm({
+        title: '',
+        image: '',
+        short_description: '',
+        description: '',
+        author: user?.full_name,
+        userId: user?.id,
+        created_at: currentDate,
+        updated_at: currentDate,
+      })
+    }
+  }, [jorneyId, detailJorney])
   const handleChange = e => {
     const name = e.target.name
     const value = e.target.value
@@ -52,12 +89,16 @@ const AddJorneyPage = () => {
   const handleSubmit = e => {
     e.preventDefault()
     if (validate()) {
-      dispatch(createJorney(inputForm))
+      if (jorneyId) {
+        dispatch(updateJorney(jorneyId, inputForm))
+      } else {
+        dispatch(createJorney(inputForm))
+      }
     }
   }
 
   useEffect(() => {
-    if (createDataStatus) {
+    if (createDataStatus || updatedJorneyStatus) {
       setInputForm({
         title: '',
         image: '',
@@ -68,11 +109,12 @@ const AddJorneyPage = () => {
         created_at: currentDate,
         updated_at: currentDate,
       })
+      dispatch(resetAddJorney())
     }
-  }, [createDataStatus])
+  }, [createDataStatus, updatedJorneyStatus])
   return (
     <Container maxWidth="xl">
-      <HeadTitle text={'New Jorney'} />
+      <HeadTitle text={jorneyId ? 'Edit Jorney' : 'New Jorney'} />
       <form action="#" className={styles.form} onSubmit={handleSubmit}>
         <div className={styles.wrapper__input}>
           <label htmlFor="title" className={styles.label}>

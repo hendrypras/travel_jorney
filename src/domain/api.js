@@ -64,6 +64,13 @@ export const createJorney = data => {
     data,
   })
 }
+export const updateJorney = (jorneyId, data) => {
+  return callAPI({
+    endpoint: `${urls.jorney}/${jorneyId}`,
+    method: 'PUT',
+    data,
+  })
+}
 export const addToBookMark = data => {
   return callAPI({
     endpoint: urls.bookMark,

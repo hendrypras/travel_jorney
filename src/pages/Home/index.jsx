@@ -90,6 +90,7 @@ const HomePage = () => {
                   short_description: text,
                   created_at: val?.created_at,
                   author: val?.author,
+                  userId: val?.userId,
                 }
                 return (
                   <React.Fragment key={val?.id}>
@@ -97,6 +98,7 @@ const HomePage = () => {
                       bookMark={e => handleAddToBookMark(e, val)}
                       data={dataCard}
                       details={() => handleDetail(val?.id)}
+                      editFunc={() => navigate(`/user/edit-jorney/${val.id}`)}
                     />
                   </React.Fragment>
                 )

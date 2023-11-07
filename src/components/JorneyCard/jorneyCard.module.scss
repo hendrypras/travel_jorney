@@ -32,6 +32,24 @@
         color: $bg-btn-primary;
       }
     }
+    .icon__btn__edit {
+      position: absolute;
+      top: 3rem;
+      right: 8px;
+      z-index: 10;
+      background: #fff;
+      border-radius: 50%;
+      width: 30px;
+      height: 30px;
+      border: none;
+      @include displayFlex(row, center, center);
+      cursor: pointer;
+      .icon {
+        width: 20px;
+        height: 20px;
+        color: $bg-btn-primary;
+      }
+    }
   }
   .wrapper__content_card {
     @include padding(13px, 15px, 15px, 15px);
