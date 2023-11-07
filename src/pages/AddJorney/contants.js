@@ -1,0 +1,2 @@
+export const CREATE_JORNEY = 'CREATE_JORNEY'
+export const SET_NEW_JORNEY = 'SET_NEW_JORNEY'
